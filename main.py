@@ -18,7 +18,10 @@ def main(page: ft.Page):
         ft.Row(
             [
                 ft.IconButton(ft.icons.HOME, on_click=get_info),
-                ft.Icon(ft.icons.BACK_HAND)
+                ft.Icon(ft.icons.BACK_HAND),
+                ft.ElevatedButton(text='Click me', on_click=get_info),
+                ft.OutlinedButton(text='Click me', on_click=get_info),
+                ft.Checkbox(label="Вы согласны", value=True)
             ],
             alignment=ft.MainAxisAlignment.CENTER
         ),
