@@ -3,3 +3,5 @@ __pycache__/
 .vscode
 .idea
 k.py
+test.txt
+my.base

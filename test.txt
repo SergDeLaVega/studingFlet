@@ -1,7 +1,0 @@
- ft.row(
-            [
-                ft.IconButton(ft.icons.SUNNY, on_click=change_theme),
-                ft.Text('Погодная программа')
-            ],
-            alignment=ft.MainAxisAlignment.CENTER
-        )
