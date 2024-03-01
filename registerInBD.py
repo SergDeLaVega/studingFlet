@@ -40,6 +40,13 @@ def main(page: ft.Page):
             user_login.value = ''
             user_pass.value = ''
             btn_auth.text = 'Авторизовано'
+
+            if len(page.navigation_bar.destinations) == 2:
+                page.navigation_bar.destinations.append(ft.NavigationDestination(
+                    icon=ft.icons.BOOK,
+                    label="Кабинет",
+                    selected_icon=ft.icons.BOOKMARK
+                ))
             page.update()
         else:
             page.snack_bar = ft.SnackBar(ft.Text("Неверно введенные данные"))
@@ -65,6 +72,12 @@ def main(page: ft.Page):
     user_pass = ft.TextField(label='Пароль', password=True, width=200, on_change=validate)
     btn_reg = ft.OutlinedButton(text='Добавить', width=200, on_click=register, disabled=True)
     btn_auth = ft.OutlinedButton(text='Авторизовать', width=200, on_click=auth_user, disabled=True)
+
+    #User cabinet
+    users_list = ft.ListView(spacing=10, padding=20)
+
+    
+    #User cabinet end
 
     panel_auth = ft.Row(
             [
@@ -94,11 +107,41 @@ def main(page: ft.Page):
             alignment=ft.MainAxisAlignment.CENTER
         )
 
+    panel_kabinet = ft.Row(
+            [
+                ft.Column(
+                    [
+                        ft.Text('Личный кабинет'),
+                        users_list
+                    ]
+                )
+            ],
+            alignment=ft.MainAxisAlignment.CENTER
+        )
+
     def navigate(e):
         index = page.navigation_bar.selected_index
         page.clean()
         if index==0: page.add(panel_register)
         elif index==1: page.add(panel_auth)
+        elif index==2:
+            users_list.controls.clear()
+            db = sqlite3.connect('my.base')
+            cur = db.cursor()
+            cur.execute("SELECT * FROM users")
+            res = cur.fetchall()
+            if res != None: 
+                for user in res:
+                    print(user)
+                    users_list.controls.append(ft.Row(
+                    [
+                        ft.Text(f"User: {user[1]}"),
+                        ft.Icon(ft.icons.VERIFIED_USER_ROUNDED)
+                    ]
+                ))
+            db.commit()
+            db.close()
+            page.add(panel_kabinet)
 
     page.navigation_bar =ft.NavigationBar(
         destinations=[
